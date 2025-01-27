@@ -11,3 +11,24 @@ spring:
       server:
         native:
           search-locations: classpath:/configurations
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+  datasource:
+    url: jdbc:postgresql://localhost:5432/courses
+    username: admin
+    password: password
+    driver-class-name: org.postgresql.Driver
+  flyway:
+    enabled: true
+    url: jdbc:postgresql://localhost:5432/courses
+    user: admin
+    password: password
+    baseline-on-migrate: true
+    baseline-description: "init"
+    baseline-version: 0
+    locations: classpath:db/migration
+logging:
+  level:
+    org.flywaydb: DEBUG
