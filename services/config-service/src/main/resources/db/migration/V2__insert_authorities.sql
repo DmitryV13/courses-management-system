@@ -1,6 +1,6 @@
 INSERT INTO authorities (name)
 VALUES
-('STUDENT'),
-('TEACHER'),
-('TRAINEE'),
-('ADMIN');
+    ('STUDENT'),
+    ('TEACHER'),
+    ('TRAINEE'),
+    ('ADMIN');
