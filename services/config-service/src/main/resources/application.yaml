@@ -29,6 +29,6 @@ spring:
     baseline-description: "init"
     baseline-version: 0
     locations: classpath:db/migration
-logging:
-  level:
-    org.flywaydb: DEBUG
+#logging:
+#  level:
+#    org.flywaydb: DEBUG
