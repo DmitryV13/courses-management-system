@@ -1,0 +1,17 @@
+server:
+  port: 8000
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+  datasource:
+    url: jdbc:postgresql://localhost:5432/courses
+    username: admin
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+jwt:
+  secretKey256: 5a2a9a5ddd3770c952bb801ec55a942e056e7810b4e2dad37be21e8d99ca8bd6
+  secretKey512: 3vHUc3G0PlQCGdE2tluESGd1OTxlxsB4Dw73NgjVNBSvWoPAEdtaHhyqi4JZgff9BIGJJbB+mcIPxPlXW2AGjQ==

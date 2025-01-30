@@ -12,6 +12,8 @@ public class AuthenticationController {
     
     @GetMapping("/token-verification")
     Boolean verifyToken(@RequestParam("token") String token){
+        int i=9;
+        i++;
         return true;
     }
     

@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(
-        name = "user-service",
-        url = "http://localhost:8222/api/v1/users"
+        name = "auth-service",
+        url = "http://localhost:8000/api/v1/auth"
 )
-public interface UserClient {
+public interface AuthClient {
     @GetMapping("/token-verification")
     Boolean verifyToken(@RequestParam("token") String token);
 }
