@@ -29,7 +29,7 @@ public class AuthGatewayFilter implements GlobalFilter, Ordered {
         String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
         
         if(
-                !path.startsWith("/api/v1/auth/register") ||
+                !path.startsWith("/api/v1/auth/register") &&
                 !path.startsWith("/api/v1/auth/authenticate")
         ) {
             if (authHeader != null && authHeader.startsWith("Bearer ")) {

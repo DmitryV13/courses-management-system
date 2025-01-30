@@ -9,9 +9,11 @@ import java.util.List;
 
 public class SecureUserDetails implements UserDetails {
     private String username;
+    private String password;
     
     public SecureUserDetails(User user) {
         this.username = user.getUsername();
+        this.password = user.getPassword();
     }
     
     @Override
@@ -21,7 +23,7 @@ public class SecureUserDetails implements UserDetails {
     
     @Override
     public String getPassword() {
-        return "";
+        return password;
     }
     
     @Override

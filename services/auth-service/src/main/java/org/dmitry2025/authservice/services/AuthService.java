@@ -14,6 +14,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -24,24 +26,34 @@ public class AuthService {
     private final UserDetailsService userDetailsService;
     private final UserRepository userRepository;
     private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
     
     public AuthService(
             JwtUtils jwtUtils,
             UserDetailsService userDetailsService,
             UserRepository userRepository,
-            AuthenticationManager authenticationManager
+            AuthenticationManager authenticationManager,
+            PasswordEncoder passwordEncoder
     ) {
         this.jwtUtils = jwtUtils;
         this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
         this.authenticationManager = authenticationManager;
+        this.passwordEncoder = passwordEncoder;
     }
     
     public Boolean verifyToken(String token) {
+        var f = SecurityContextHolder.getContext().getAuthentication();
         var login = jwtUtils.extractLogin(token);
         if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(login);
             if(jwtUtils.isTokenValid(token, userDetails)) {
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        null
+                );
+                SecurityContextHolder.getContext().setAuthentication(authToken);
                 return true;
             }
             return false;
@@ -50,13 +62,11 @@ public class AuthService {
     }
     
     public String register(RegisterRequest request) {
-        String activationKey = UUID.randomUUID().toString();
-        
         var userAuthority = new Authority(request.getRole());
         var user = new User(
                 request.getUsername(),
                 request.getEmail(),
-                request.getPassword()
+                passwordEncoder.encode(request.getPassword())
         );
         user.getAuthorities().add(userAuthority);
         
@@ -71,6 +81,8 @@ public class AuthService {
                         request.getPassword()
                 )
         );
+        //SecurityContextHolder.getContext().setAuthentication(authToken);
+        var f = SecurityContextHolder.getContext().getAuthentication();
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
         
