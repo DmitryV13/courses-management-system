@@ -1,7 +1,6 @@
 package org.dmitry2025.gateway.filters;
 
 import org.dmitry2025.gateway.user.AuthClient;
-import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.context.annotation.Lazy;
@@ -14,11 +13,11 @@ import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 @Component
-public class AuthGatewayFilter implements GlobalFilter, Ordered {
+public class AuthGlobalFilter implements GlobalFilter, Ordered {
     
     private final AuthClient authClient;
     
-    public AuthGatewayFilter(@Lazy AuthClient authClient) {
+    public AuthGlobalFilter(@Lazy AuthClient authClient) {
         this.authClient = authClient;
     }
     
@@ -34,9 +33,9 @@ public class AuthGatewayFilter implements GlobalFilter, Ordered {
         ) {
             if (authHeader != null && authHeader.startsWith("Bearer ")) {
                 var authToken = authHeader.substring(7);
-                var responce = authClient.verifyToken(authToken);
-                
-                if (responce) {
+                var response = authClient.verifyToken(authToken)
+                        .orElseThrow(()-> new RuntimeException("Invalid response"));
+                if (response) {
                     return chain.filter(exchange);
                 } else {
                     exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);

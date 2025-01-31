@@ -7,6 +7,8 @@ import org.dmitry2025.authservice.services.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 public class AuthController {
@@ -17,8 +19,8 @@ public class AuthController {
     }
     
     @GetMapping("/token-verification")
-    Boolean verifyToken(@RequestParam("token") String token){
-        return authService.verifyToken(token);
+    Optional<Boolean> verifyToken(@RequestParam("token") String token){
+        return Optional.of(authService.verifyToken(token));
     }
     
     @PostMapping("/register")

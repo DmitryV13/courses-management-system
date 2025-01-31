@@ -10,15 +10,11 @@ import org.dmitry2025.authservice.responses.AuthenticationResponse;
 import org.dmitry2025.authservice.responses.RegisterRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class AuthService {
@@ -43,20 +39,11 @@ public class AuthService {
     }
     
     public Boolean verifyToken(String token) {
-        var f = SecurityContextHolder.getContext().getAuthentication();
         var login = jwtUtils.extractLogin(token);
-        if (login != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        if (login != null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(login);
-            if(jwtUtils.isTokenValid(token, userDetails)) {
-                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        null
-                );
-                SecurityContextHolder.getContext().setAuthentication(authToken);
-                return true;
-            }
-            return false;
+            var v = jwtUtils.isTokenValid(token, userDetails);
+            return jwtUtils.isTokenValid(token, userDetails);
         }
         return false;
     }
@@ -81,8 +68,6 @@ public class AuthService {
                         request.getPassword()
                 )
         );
-        //SecurityContextHolder.getContext().setAuthentication(authToken);
-        var f = SecurityContextHolder.getContext().getAuthentication();
         var user = userRepository.findByUsername(request.getUsername())
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
         

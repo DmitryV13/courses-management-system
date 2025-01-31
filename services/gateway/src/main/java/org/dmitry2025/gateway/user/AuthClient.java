@@ -1,8 +1,11 @@
 package org.dmitry2025.gateway.user;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Optional;
 
 @FeignClient(
         name = "auth-service",
@@ -10,5 +13,5 @@ import org.springframework.web.bind.annotation.RequestParam;
 )
 public interface AuthClient {
     @GetMapping("/token-verification")
-    Boolean verifyToken(@RequestParam("token") String token);
+    Optional<Boolean> verifyToken(@RequestParam("token") String token);
 }
