@@ -1,0 +1,18 @@
+server:
+  port: 8111
+
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
+    database: postgresql
+  datasource:
+    url: jdbc:postgresql://localhost:5432/courses
+    username: admin
+    password: password
+    driver-class-name: org.postgresql.Driver
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
