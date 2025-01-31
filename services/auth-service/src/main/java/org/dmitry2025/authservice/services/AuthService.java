@@ -5,11 +5,14 @@ import org.dmitry2025.authservice.configuration.SecureUserDetails;
 import org.dmitry2025.authservice.entities.Authority;
 import org.dmitry2025.authservice.entities.User;
 import org.dmitry2025.authservice.repositories.UserRepository;
-import org.dmitry2025.authservice.responses.AuthenticationRequest;
-import org.dmitry2025.authservice.responses.AuthenticationResponse;
-import org.dmitry2025.authservice.responses.RegisterRequest;
+import org.dmitry2025.authservice.other.AuthenticationRequest;
+import org.dmitry2025.authservice.other.AuthenticationResponse;
+import org.dmitry2025.authservice.other.AuthorizationResponse;
+import org.dmitry2025.authservice.other.RegisterRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,14 +41,17 @@ public class AuthService {
         this.passwordEncoder = passwordEncoder;
     }
     
-    public Boolean verifyToken(String token) {
+    public AuthorizationResponse verifyToken(String token) {
         var login = jwtUtils.extractLogin(token);
         if (login != null) {
             UserDetails userDetails = userDetailsService.loadUserByUsername(login);
-            var v = jwtUtils.isTokenValid(token, userDetails);
-            return jwtUtils.isTokenValid(token, userDetails);
+            var succes = jwtUtils.isTokenValid(token, userDetails);
+            var authorities = userDetails.getAuthorities().stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .toList();
+            return new AuthorizationResponse(succes, login, authorities);
         }
-        return false;
+        return null;
     }
     
     public String register(RegisterRequest request) {

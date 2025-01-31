@@ -1,8 +1,9 @@
 package org.dmitry2025.authservice.controllers;
 
-import org.dmitry2025.authservice.responses.AuthenticationRequest;
-import org.dmitry2025.authservice.responses.AuthenticationResponse;
-import org.dmitry2025.authservice.responses.RegisterRequest;
+import org.dmitry2025.authservice.other.AuthenticationRequest;
+import org.dmitry2025.authservice.other.AuthenticationResponse;
+import org.dmitry2025.authservice.other.AuthorizationResponse;
+import org.dmitry2025.authservice.other.RegisterRequest;
 import org.dmitry2025.authservice.services.AuthService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,7 @@ public class AuthController {
     }
     
     @GetMapping("/token-verification")
-    Optional<Boolean> verifyToken(@RequestParam("token") String token){
+    Optional<AuthorizationResponse> verifyToken(@RequestParam("token") String token){
         return Optional.of(authService.verifyToken(token));
     }
     

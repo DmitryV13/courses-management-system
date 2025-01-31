@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.util.stream.Collectors;
+
 @Component
 public class AuthGlobalFilter implements GlobalFilter, Ordered {
     
@@ -35,7 +37,17 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
                 var authToken = authHeader.substring(7);
                 var response = authClient.verifyToken(authToken)
                         .orElseThrow(()-> new RuntimeException("Invalid response"));
-                if (response) {
+                if (response.success()) {
+                    ServerHttpRequest modifiedRequest = request.mutate()
+                            .header("username", response.login())
+                            .header("authorities",
+                                    String.join(",", response.authorities())
+                            )
+                            .build();
+                    
+                    ServerWebExchange modifiedExchange = exchange.mutate()
+                            .request(modifiedRequest)
+                            .build();
                     return chain.filter(exchange);
                 } else {
                     exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);

@@ -1,6 +1,4 @@
-package org.dmitry2025.authservice.responses;
-
-import jakarta.persistence.Column;
+package org.dmitry2025.authservice.other;
 
 public class AuthenticationRequest {
     private String username;

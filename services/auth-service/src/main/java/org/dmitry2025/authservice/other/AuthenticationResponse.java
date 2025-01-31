@@ -1,4 +1,4 @@
-package org.dmitry2025.authservice.responses;
+package org.dmitry2025.authservice.other;
 
 public class AuthenticationResponse {
     private String token;

@@ -13,5 +13,5 @@ import java.util.Optional;
 )
 public interface AuthClient {
     @GetMapping("/token-verification")
-    Optional<Boolean> verifyToken(@RequestParam("token") String token);
+    Optional<AuthorizationResponse> verifyToken(@RequestParam("token") String token);
 }
