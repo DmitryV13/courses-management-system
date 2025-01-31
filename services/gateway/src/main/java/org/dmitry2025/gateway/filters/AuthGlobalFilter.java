@@ -12,8 +12,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
-import java.util.stream.Collectors;
-
 @Component
 public class AuthGlobalFilter implements GlobalFilter, Ordered {
     
@@ -48,7 +46,7 @@ public class AuthGlobalFilter implements GlobalFilter, Ordered {
                     ServerWebExchange modifiedExchange = exchange.mutate()
                             .request(modifiedRequest)
                             .build();
-                    return chain.filter(exchange);
+                    return chain.filter(modifiedExchange);
                 } else {
                     exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
                     return exchange.getResponse().setComplete();

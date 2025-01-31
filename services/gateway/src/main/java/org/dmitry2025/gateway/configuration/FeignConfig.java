@@ -1,4 +1,4 @@
-package org.dmitry2025.gateway.configurations;
+package org.dmitry2025.gateway.configuration;
 
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
