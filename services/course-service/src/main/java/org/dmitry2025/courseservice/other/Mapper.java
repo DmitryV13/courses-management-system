@@ -8,7 +8,7 @@ public class Mapper {
         Course course = new Course();
         course.setName(request.name());
         course.setDescription(request.description());
-        course.setEnrollment_type(request.enrollmentType());
+        course.setEnrollmentType(request.enrollmentType());
         return course;
     }
 }

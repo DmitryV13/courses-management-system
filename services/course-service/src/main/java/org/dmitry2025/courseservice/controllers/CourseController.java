@@ -1,5 +1,6 @@
 package org.dmitry2025.courseservice.controllers;
 
+import jakarta.transaction.Transactional;
 import org.dmitry2025.courseservice.requests.ChangeEnrollmentRequest;
 import org.dmitry2025.courseservice.requests.CourseRequest;
 import org.dmitry2025.courseservice.responses.CourseResponse;
@@ -50,31 +51,32 @@ public class CourseController {
     {
         return ResponseEntity.ok(courseService.createCourse(request));
     }
-//
-//    @PreAuthorize("hasAnyAuthority('TEACHER')")
-//    @PutMapping("/update")
-//    ResponseEntity<String> updateCourse(
-//            @RequestBody CourseRequest request
-//    )
-//    {
-//        return ResponseEntity.ok(courseService.updateCourse(request));
-//    }
-//
-//    @PreAuthorize("hasAnyAuthority('TEACHER')")
-//    @PatchMapping("/change-etype")
-//    ResponseEntity<String> changeEnrollmentType(
-//            @RequestBody ChangeEnrollmentRequest request
-//    )
-//    {
-//        return ResponseEntity.ok(courseService.changeEnrollmentType(request));
-//    }
-//
-//    @PreAuthorize("hasAnyAuthority('TEACHER')")
-//    @DeleteMapping("/delete")
-//    ResponseEntity<String> deleteCourse(
-//            @RequestParam("course-name") String name
-//    )
-//    {
-//        return ResponseEntity.ok(courseService.deleteCourse(name));
-//    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER')")
+    @PutMapping("/update")
+    ResponseEntity<String> updateCourse(
+            @RequestBody CourseRequest request
+    )
+    {
+        return ResponseEntity.ok(courseService.updateCourse(request));
+    }
+
+    @PreAuthorize("hasAnyAuthority('TEACHER')")
+    @PatchMapping("/change-etype")
+    ResponseEntity<String> changeEnrollmentType(
+            @RequestBody ChangeEnrollmentRequest request
+    )
+    {
+        return ResponseEntity.ok(courseService.changeEnrollmentType(request));
+    }
+
+    @Transactional
+    @PreAuthorize("hasAnyAuthority('TEACHER')")
+    @DeleteMapping("/delete")
+    ResponseEntity<String> deleteCourse(
+            @RequestParam("course-name") String name
+    )
+    {
+        return ResponseEntity.ok(courseService.deleteCourse(name));
+    }
 }

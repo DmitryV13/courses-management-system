@@ -17,7 +17,7 @@ public class Course {
     @Column(nullable = false)
     private ENROLLMENT_TYPE enrollment_type;
     
-    @OneToMany(mappedBy = "courses", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<UserCourse> usersCourses;
     
     @OneToMany(mappedBy = "course")

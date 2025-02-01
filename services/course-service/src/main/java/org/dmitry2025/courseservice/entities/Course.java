@@ -40,7 +40,7 @@ public class Course {
         this.description = description;
     }
     
-    public void setEnrollment_type(ENROLLMENT_TYPE enrollment_type) {
+    public void setEnrollmentType(ENROLLMENT_TYPE enrollment_type) {
         this.enrollment_type = enrollment_type;
     }
 }

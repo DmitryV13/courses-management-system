@@ -8,6 +8,7 @@ import org.dmitry2025.courseservice.other.Mapper;
 import org.dmitry2025.courseservice.repositories.CourseRepository;
 import org.dmitry2025.courseservice.repositories.UserCourseRepository;
 import org.dmitry2025.courseservice.repositories.UserRepository;
+import org.dmitry2025.courseservice.requests.ChangeEnrollmentRequest;
 import org.dmitry2025.courseservice.requests.CourseRequest;
 import org.dmitry2025.courseservice.responses.CourseResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CourseService {
@@ -52,7 +54,7 @@ public class CourseService {
     
     public List<CourseResponse> getUserCourses() {
         var username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-        User user = userRepository.findByUsername(username)
+        var user = userRepository.findByUsername(username)
                 .orElseThrow(()-> new RuntimeException("User not found!"));
         
         List<CourseResponse> courseResponses = new ArrayList<>();
@@ -68,5 +70,43 @@ public class CourseService {
             );
         }
         return courseResponses;
+    }
+    
+    public String updateCourse(CourseRequest request) {
+        var course = confirmOwner(request.name())
+                .orElseThrow(()-> new RuntimeException("You are not the owner of this course!"));
+        
+        course.setDescription(request.description());
+        course.setEnrollmentType(request.enrollmentType());
+        courseRepository.save(course);
+        return "Course updated successfully!";
+    }
+    
+    public String changeEnrollmentType(ChangeEnrollmentRequest request) {
+        var course = confirmOwner(request.name())
+                .orElseThrow(()-> new RuntimeException("You are not the owner of this course!"));
+        
+        course.setEnrollmentType(request.enrollmentType());
+        courseRepository.save(course);
+        return "Course updated successfully!";
+    }
+    
+    public String deleteCourse(String name) {
+        var course = confirmOwner(name)
+                .orElseThrow(()-> new RuntimeException("You are not the owner of this course!"));
+        courseRepository.delete(course);
+        return "Course deleted successfully!";
+    }
+    
+    //returns course only if current user is the owner
+    private Optional<Course> confirmOwner(String courseName){
+        var username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        var user = userRepository.findByUsername(username)
+                .orElseThrow(()-> new RuntimeException("User not found!"));
+        var course = courseRepository.findByName(courseName)
+                .orElseThrow(()-> new RuntimeException("Course not found!"));
+        var connector = userCourseRepository.findByUserIdAndCourseName(user.getId(), courseName)
+                .orElseThrow(()-> new RuntimeException("Course not found!"));
+        return connector.getOwner() ? Optional.of(course) : Optional.empty();
     }
 }

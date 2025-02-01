@@ -5,7 +5,9 @@ import org.dmitry2025.courseservice.entities.UserCourseK;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface UserCourseRepository extends JpaRepository<UserCourse, UserCourseK> {
     List<UserCourse> findByUserId(Long id);
+    Optional<UserCourse> findByUserIdAndCourseName(Long id, String courseName);
 }
