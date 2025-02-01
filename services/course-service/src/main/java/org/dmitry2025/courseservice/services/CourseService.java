@@ -9,8 +9,12 @@ import org.dmitry2025.courseservice.repositories.CourseRepository;
 import org.dmitry2025.courseservice.repositories.UserCourseRepository;
 import org.dmitry2025.courseservice.repositories.UserRepository;
 import org.dmitry2025.courseservice.requests.CourseRequest;
+import org.dmitry2025.courseservice.responses.CourseResponse;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CourseService {
@@ -31,7 +35,7 @@ public class CourseService {
     public String createCourse(CourseRequest request) {
         var username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new RuntimeException("Teacher not found"));
+                .orElseThrow(()-> new RuntimeException("Teacher not found!"));
         
         var course = Mapper.mapToCourse(request);
         courseRepository.save(course);
@@ -42,6 +46,27 @@ public class CourseService {
         userCourse.setCourse(course);
         userCourse.setOwner(true);
         userCourseRepository.save(userCourse);
+        
         return "Course created successfully!";
+    }
+    
+    public List<CourseResponse> getUserCourses() {
+        var username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(()-> new RuntimeException("User not found!"));
+        
+        List<CourseResponse> courseResponses = new ArrayList<>();
+        var userCourses = userCourseRepository.findByUserId(user.getId());
+        for(UserCourse connector: userCourses){
+            var course = courseRepository.findByName(connector.getId().getCourseName())
+                            .orElseThrow(()-> new RuntimeException("Course not found!"));
+            courseResponses.add(new CourseResponse(
+                    course.getName(),
+                    course.getDescription(),
+                    course.getEnrollmentType(),
+                    connector.getOwner())
+            );
+        }
+        return courseResponses;
     }
 }

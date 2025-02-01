@@ -20,11 +20,11 @@ public class CourseController {
         this.courseService = courseService;
     }
     
-//    @GetMapping("/user-courses")
-//    ResponseEntity<List<CourseResponse>> getUserCourses()
-//    {
-//        return ResponseEntity.ok(courseService.getUserCourses());
-//    }
+    @GetMapping("/user-courses")
+    ResponseEntity<List<CourseResponse>> getUserCourses()
+    {
+        return ResponseEntity.ok(courseService.getUserCourses());
+    }
 //
 //    @GetMapping("/enroll")
 //    ResponseEntity<String> enrollOnCourse(

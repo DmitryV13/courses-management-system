@@ -1,4 +1,4 @@
-package org.dmitry2025.gateway.filters;
+package org.dmitry2025.gateway.configuration;
 
 import org.dmitry2025.gateway.user.AuthClient;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;

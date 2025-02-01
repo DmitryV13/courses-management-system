@@ -36,4 +36,12 @@ public class UserCourse {
     public void setCourse(Course course) {
         this.course = course;
     }
+    
+    public UserCourseK getId() {
+        return id;
+    }
+    
+    public Boolean getOwner() {
+        return courseOwner;
+    }
 }

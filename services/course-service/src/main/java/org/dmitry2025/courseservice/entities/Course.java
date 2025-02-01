@@ -28,7 +28,7 @@ public class Course {
         return description;
     }
     
-    public ENROLLMENT_TYPE getEnrollment_type() {
+    public ENROLLMENT_TYPE getEnrollmentType() {
         return enrollment_type;
     }
     
