@@ -17,8 +17,8 @@ public class Course {
     @Column(nullable = false)
     private ENROLLMENT_TYPE enrollment_type;
     
-    @ManyToMany(mappedBy = "courses")
-    private Set<User> users;
+    @OneToMany(mappedBy = "courses", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserCourse> usersCourses;
     
     @OneToMany(mappedBy = "course")
     private Set<Quiz> quizzes;

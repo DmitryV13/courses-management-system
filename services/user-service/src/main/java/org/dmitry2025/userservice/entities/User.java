@@ -54,21 +54,8 @@ public class User {
     )
     private Set<Authority> authorities;
     
-    @ManyToMany
-    @JoinTable(
-            name = "users_courses",
-            joinColumns = @JoinColumn(
-                    name = "user_id",
-                    foreignKey = @ForeignKey(name = "fk_user_id"),
-                    referencedColumnName = "id"
-            ),
-            inverseJoinColumns = @JoinColumn(
-                    name = "course_name",
-                    foreignKey = @ForeignKey(name = "fk_course_name"),
-                    referencedColumnName = "name"
-            )
-    )
-    private Set<Course> courses;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserCourse> usersCourses;
     
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     private Enrollment enrollment;

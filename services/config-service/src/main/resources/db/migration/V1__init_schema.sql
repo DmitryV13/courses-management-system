@@ -38,24 +38,25 @@ CREATE TABLE IF NOT EXISTS users_authorities
 );
 
 ALTER TABLE users_authorities
-    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id);
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE users_authorities
-    ADD CONSTRAINT fk_authority_name FOREIGN KEY (authority_name) REFERENCES authorities (name);
+    ADD CONSTRAINT fk_authority_name FOREIGN KEY (authority_name) REFERENCES authorities (name) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --USERS-COURSES TABLE
 CREATE TABLE IF NOT EXISTS users_courses
 (
-    course_name VARCHAR(50) NOT NULL,
-    user_id     BIGINT      NOT NULL,
+    course_name  VARCHAR(50) NOT NULL,
+    user_id      BIGINT      NOT NULL,
+    course_owner BOOLEAN     NOT NULL,
     CONSTRAINT pk_users_courses PRIMARY KEY (course_name, user_id)
 );
 
 ALTER TABLE users_courses
-    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id);
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE users_courses
-    ADD CONSTRAINT fk_course_name FOREIGN KEY (course_name) REFERENCES courses (name);
+    ADD CONSTRAINT fk_course_name FOREIGN KEY (course_name) REFERENCES courses (name) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --ENROLLMENTS TABLE
 CREATE TABLE IF NOT EXISTS enrollments
@@ -69,7 +70,7 @@ CREATE TABLE IF NOT EXISTS enrollments
 );
 
 ALTER TABLE enrollments
-    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id);
+    ADD CONSTRAINT fk_user_id FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --REVIEWS TABLE
 CREATE TABLE IF NOT EXISTS reviews
@@ -81,7 +82,7 @@ CREATE TABLE IF NOT EXISTS reviews
 );
 
 ALTER TABLE reviews
-    ADD CONSTRAINT fk_course_name FOREIGN KEY (course_name) REFERENCES courses (name);
+    ADD CONSTRAINT fk_course_name FOREIGN KEY (course_name) REFERENCES courses (name) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --MATERIALS TABLE
 CREATE TABLE IF NOT EXISTS materials
@@ -95,7 +96,7 @@ CREATE TABLE IF NOT EXISTS materials
 );
 
 ALTER TABLE materials
-    ADD CONSTRAINT fk_course_name FOREIGN KEY (course_name) REFERENCES courses (name);
+    ADD CONSTRAINT fk_course_name FOREIGN KEY (course_name) REFERENCES courses (name) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --QUIZZES TABLE
 CREATE TABLE IF NOT EXISTS quizzes
@@ -106,7 +107,7 @@ CREATE TABLE IF NOT EXISTS quizzes
 );
 
 ALTER TABLE quizzes
-    ADD CONSTRAINT fk_course_name FOREIGN KEY (course_name) REFERENCES courses (name);
+    ADD CONSTRAINT fk_course_name FOREIGN KEY (course_name) REFERENCES courses (name) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --QUESTIONS TABLE
 CREATE TABLE IF NOT EXISTS questions
@@ -118,4 +119,4 @@ CREATE TABLE IF NOT EXISTS questions
 );
 
 ALTER TABLE questions
-    ADD CONSTRAINT fk_quiz_name FOREIGN KEY (quiz_name) REFERENCES quizzes (name);
+    ADD CONSTRAINT fk_quiz_name FOREIGN KEY (quiz_name) REFERENCES quizzes (name) ON DELETE CASCADE ON UPDATE CASCADE;

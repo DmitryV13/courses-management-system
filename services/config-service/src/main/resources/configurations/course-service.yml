@@ -1,5 +1,5 @@
 server:
-  port: 8000
+  port: 8444
 
 spring:
   jpa:
@@ -16,7 +16,3 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-
-jwt:
-  secretKey256: 5a2a9a5ddd3770c952bb801ec55a942e056e7810b4e2dad37be21e8d99ca8bd6
-  secretKey512: 3vHUc3G0PlQCGdE2tluESGd1OTxlxsB4Dw73NgjVNBSvWoPAEdtaHhyqi4JZgff9BIGJJbB+mcIPxPlXW2AGjQ==
