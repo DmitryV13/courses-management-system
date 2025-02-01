@@ -1,4 +1,4 @@
-package org.dmitry2025.userservice.entities;
+package org.dmitry2025.courseservice.entities;
 
 import jakarta.persistence.*;
 
@@ -20,4 +20,20 @@ public class UserCourse {
     
     @Column(nullable = false)
     private Boolean courseOwner;
+    
+    public void setId(UserCourseK id) {
+        this.id = id;
+    }
+    
+    public void setOwner(Boolean owner) {
+        this.courseOwner = owner;
+    }
+    
+    public void setUser(User user) {
+        this.user = user;
+    }
+    
+    public void setCourse(Course course) {
+        this.course = course;
+    }
 }
